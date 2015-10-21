@@ -1,0 +1,4 @@
+ana:mendez:mendez:mujer
+jose:ruiz:lopez:hombre
+antonio:rguez:glez:hombre
+maria:alonso:hernandez:mujer
