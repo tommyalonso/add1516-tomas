@@ -1,0 +1,4 @@
+firefox:kill
+geany:n
+gimp-2.8:kill
+writer:n
