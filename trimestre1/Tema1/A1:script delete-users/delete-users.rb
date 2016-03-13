@@ -1,17 +1,12 @@
 #!/usr/bin/ruby
+# encoding: utf-8
 
-resultado = `cat userlist.txt`
+resultado=`cat userslist.txt`
 
-asignaturas = resultado.split("\n")
+users=resultado.split("\n")
+users.each do |user|
 
-puts asignaturas
+system("userdel -r #{user}")
 
-size=asignaturas.size - 1
-
-system("rmdir #{asignatruras[0]}")
-
-asignaturas[1,size].each do |nombre|
-	system("rmdir #{asignatruras[0]}/#{nombre}")
+puts "Has borrado el usuario: #{user}"
 end
-
-puts "Creadas las carpetas"
