@@ -1,0 +1,147 @@
+<div id="player">
+  <div id="lcd">
+    <div id="lcdtext"></div>
+    <div id="data"></div>
+    <div id="time"></div>
+  </div>
+  <audio id="song"></audio>
+  <button onClick="apagar()"><i class="fa fa-power-off"></i></button>
+  <button onClick="atras()"><i class="fa fa-fast-backward"></i></button>
+  <button onClick="rebobinar()"><i class="fa fa-backward"></i></button>
+  <button onClick="reproducir()"><i class="fa fa-play"></i></button>
+  <button onClick="pausar()"><i class="fa fa-pause"></i></button>
+  <button onClick="stop()"><i class="fa fa-stop"></i></button>
+  <button onClick="adelantar()"><i class="fa fa-forward"></i></button>
+  <button onClick="siguiente()"><i class="fa fa-fast-forward"></i></button>
+<div id="list"></div>
+</div>
+@import url(https://fonts.googleapis.com/css?family=Orbitron);
+
+#player {
+  width: 500px;
+  margin: auto;
+  text-align: center;
+  background-color: grey;
+  height: 120px;
+  border: 3px solid;
+  border-radius: 10px;
+}
+
+#lcd {
+  font-family: Orbitron;
+  background: black;
+  height: 42px;
+  margin: 4px 0;
+  color: #5858FA;
+  animation:moveText 10s linear infinite;
+}
+
+button {
+  color: white;
+  background-color: black;
+  font-size: 20px;
+}
+
+#list {
+  font-family:Orbitron;
+  max-height:200px;
+  background-color:black;
+  margin:10px;
+  overflow-y:scroll;
+  color:yellow;
+  border: 1px solid;
+  transition:all 1s linear;
+}
+
+#list.expand {
+  max-height:140px;
+}
+#list div:hover {
+  cursor:pointer;
+}
+#list div:active {
+  color:yellow;
+}
+
+@keyframes moveText {
+  0% 
+  100%
+}
+var songs = ['https://scummbar.com/mi2/MI1-CD/01%20-%20Opening%20Themes%20-%20Introduction.mp3',
+             'https://scummbar.com/mi2/MI1-CD/02%20-%20Chapter%20Screen.mp3', 
+             'https://scummbar.com/mi2/MI1-CD/03%20-%20The%20Scumm%20Bar.mp3', 'https://scummbar.com/mi2/MI1-CD/04%20-%20LeChucks%20Theme.mp3', 'https://scummbar.com/mi2/MI1-CD/05%20-%20Organ%20Prelude.mp3'];
+var currentSong = 0;
+
+var audio = document.getElementById('song');
+var lcd = document.getElementById('lcd');
+audio.src= songs[currentSong];
+//var caja = document.getElementById('caja');
+//caja.classList.add('on')
+var list = document.getElementById('list');
+var data = document.getElementById('data');
+var time = document.getElementById('time');
+for (i in songs) {
+  list.innerHTML += '<div onClick="reproducirCancion('+i+')">'
+                    + limpiaNombre(songs[i]) + '</div>';
+}
+
+function atras (){
+  currentSong--;
+    if (currentSong < 0){
+      currentSong = songs.length -1;
+    }
+  reproducir();
+}
+
+function rebobinar (){
+  audio.currentTime -= 10;
+}
+
+function reproducir (){
+  audio.src = songs[currentSong];
+  audio.play();
+  mostrar();
+}      
+
+function pausar() {
+  audio.pause();
+}
+                            
+function stop() {
+  audio.pause();
+  audio.currentTime = 0;
+}                            
+
+function adelantar() {
+  audio.currentTime += 10;
+}
+
+function siguiente() {
+  currentSong++;
+  if (currentSong > songs.length){
+    currentSong = 0;
+  }
+  reproducir();
+}
+
+function mostrar() {
+   var texto = audio.src;
+   var texto = texto.replace('https://scummbar.com/mi2/MI1-CD/', '');
+   var texto = texto.replace('.mp3', '');
+   var texto = texto.replace(/%20/g, ' ');
+   lcd.innerHTML = texto
+}
+
+function limpiaNombre(texto) {
+  var nombre = decodeURIComponent(texto);
+  var pos = nombre.lastIndexOf('/');
+  var nombre = nombre.substring(pos+1);
+  return nombre.replace('.mp3', '');
+}
+
+function reproducirCancion(n) {
+  currentSong = n;
+  audio.src = songs[currentSong];
+  reproducir();
+}
+list.classList.add('expand'); list.classList.remove('expand');
